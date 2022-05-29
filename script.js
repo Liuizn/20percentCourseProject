@@ -1,24 +1,23 @@
-// control variables 
-let logInControl = false;
-
 // LOGIN AREA - STARTER
 
 //Object content login/pasword
-const LOGINS = new Array();
 
+// autenticator
+let logInControl = false;
+
+const LOGINS = new Array();
 LOGINS['invader']   = 'redavni';
 LOGINS['rafa']      = 'afar';
 LOGINS['wesley']    ='yelsew';
-
 
 //Labels inside form
 const labels    = document.querySelectorAll('.form-control label');
 
 //Inputs of form
+const containerLogin = document.getElementById('box-login');
 const inputLogin     = document.getElementById('login');
 const inputPassword  = document.getElementById('password');
 const btnSubmit = document.querySelector('#btnSubmit');
-
 
 labels.forEach((label) => 
 {
@@ -51,25 +50,48 @@ btnSubmit.addEventListener('click', (e)=>
         if(password == inputPassword.value)
         {
             logInControl = true;
-            console.log('sucesso');
         }
         else
         {
-            inputLogin.value = ''; inputPassword.value = '';
-            console.log('senha errada');
+            openMensage()
             return false;
-
         }
     }
     else
     {
-        console.log('login errado');
+        openMensage();
         return false;
     }
 
 });
 
+inputLogin.addEventListener('focus', closeMensage);
+inputPassword.addEventListener('focus', closeMensage);
 
+
+function openMensage()
+{
+    let msgSelector = document.querySelector('.msgResponse');
+
+    if(typeof(msgSelector) != 'undefined' && msgSelector != null) return 
+    
+    let msg  = document.createTextNode('Login or Password is invalid');
+    let msgResponse = document.createElement('p');
+    msgResponse.classList.add('msgResponse');
+    msgResponse.appendChild(msg);
+    
+    let form = document.getElementById('form')
+
+    form.parentElement.insertBefore(msgResponse, form);
+
+    inputLogin.value = ''; inputPassword.value = '';
+}
+
+function closeMensage() 
+{
+    let msgSelector = document.querySelector('.msgResponse');
+    containerLogin.removeChild(msgSelector);
+};
 
 
 // LOGIN AREA - END
